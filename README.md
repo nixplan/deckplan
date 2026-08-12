@@ -131,6 +131,12 @@ Das Scrollrad zoomt von 25 % bis 300 %. Es rollt damit nicht mehr - geschoben
 wird mit `Leertaste` plus Maustaste oder über die Rollbalken. `F1` legt die
 Ansicht so, dass alles aufs Bild passt.
 
+Beim Laden eines Boards und beim Öffnen der Seite passiert das von selbst -
+man muss `F1` nicht von Hand drücken. Ein geladenes Board liegt sonst
+irgendwo auf den 4000x3000 und man sucht es erst mit den Rollbalken. Nur auf
+einem leeren Brett gibt es nichts einzupassen, da startet die Ansicht wie
+bisher in der Mitte.
+
 Der Zoom gehört zur Ansicht, nicht zum Brett: er wird **nicht gespeichert**
 und steht in keinem Board-JSON. Alle Koordinaten im Modell bleiben ungezoomt,
 ein Board sieht bei jedem Zoom gleich aus.
@@ -180,8 +186,25 @@ deckplan/
 └── static/
     ├── index.html       Gerüst: Leiste, Zoom-Hülle, Brett, SVG-Ebene
     ├── deckplan.css     Helles Layout, eine Textfarbe auf allen Pastellflächen
-    └── deckplan.js      Der ganze Rest
+    ├── deckplan.js      Der ganze Rest
+    └── llm_docs.md      Anleitung für LLMs, ausgeliefert unter /llm-docs
 ```
+
+### Anleitung für LLMs
+
+`GET /llm-docs` gibt `static/llm_docs.md` als Plain Text aus - Board-Format,
+die erlaubten Farben, wie man Pfeile richtig zwischen Karten setzt und die
+Fallen, in die man dabei tappt. Geschrieben für ein LLM, das das Brett von
+außen befüllen soll, nicht für einen Menschen an der Maus.
+
+Die Marker `{{BASE_URL}}` und `{{BOARD_LISTE}}` füllt der Server beim
+Ausliefern. Die Datei wird bei jedem Aufruf frisch gelesen - Änderungen an
+der Doku wirken ohne Neustart.
+
+Damit sie auch gefunden wird, ohne dass jemand von ihr weiß, verweisen zwei
+Stellen darauf: `GET /health` führt sie im Feld `llm_docs_url`, und der Server
+schreibt die Adresse beim Start in den Log. Die Startseite `/` liefert HTML
+fürs Auge und taugt als Wegweiser nicht.
 
 ### Warum Karten HTML sind und nur die Pfeile SVG
 

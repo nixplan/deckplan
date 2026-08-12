@@ -1,0 +1,325 @@
+{
+  "name": "Ablauf Warenhaus",
+  "karten": [
+    {
+      "id": "edemokarte01",
+      "x": 380,
+      "y": 140,
+      "b": 300,
+      "farbe": "",
+      "titel": "Ablauf Warenhaus",
+      "zeilen": [
+        {
+          "id": "edemozeile011",
+          "typ": "text",
+          "farbe": "",
+          "text": "Demo-Board: der Weg der Ware vom LKW bis zum Kunden."
+        },
+        {
+          "id": "edemozeile012",
+          "typ": "text",
+          "farbe": "",
+          "text": "Grau = Hauptfluss, Rot = Ausnahme, Blau = Ausloeser."
+        }
+      ]
+    },
+    {
+      "id": "edemokarte02",
+      "x": 380,
+      "y": 420,
+      "b": 250,
+      "farbe": "#eef7e3",
+      "titel": "Wareneingang",
+      "zeilen": [
+        {
+          "id": "edemozeile021",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Tor",
+          "wert": "Rampe 3"
+        },
+        {
+          "id": "edemozeile022",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Beleg",
+          "wert": "Lieferschein"
+        },
+        {
+          "id": "edemozeile023",
+          "typ": "text",
+          "farbe": "",
+          "text": "LKW anmelden, Palette abstellen"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte03",
+      "x": 740,
+      "y": 420,
+      "b": 250,
+      "farbe": "#fbf6d8",
+      "titel": "Pruefung",
+      "zeilen": [
+        {
+          "id": "edemozeile031",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Pruefer",
+          "wert": "Karl"
+        },
+        {
+          "id": "edemozeile032",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Prueft",
+          "wert": "Menge, Zustand"
+        },
+        {
+          "id": "edemozeile033",
+          "typ": "text",
+          "farbe": "#fdecec",
+          "text": "Mangel? Dann Reklamation"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte04",
+      "x": 1100,
+      "y": 420,
+      "b": 250,
+      "farbe": "#e0f0f7",
+      "titel": "Einlagerung",
+      "zeilen": [
+        {
+          "id": "edemozeile041",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Lagerplatz",
+          "wert": "LG21"
+        },
+        {
+          "id": "edemozeile042",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Buchung",
+          "wert": "Bestand plus"
+        },
+        {
+          "id": "edemozeile043",
+          "typ": "text",
+          "farbe": "",
+          "text": "Etikett scannen, Platz quittieren"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte05",
+      "x": 1460,
+      "y": 420,
+      "b": 250,
+      "farbe": "#e6e9fb",
+      "titel": "Kommissionierung",
+      "zeilen": [
+        {
+          "id": "edemozeile051",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Pickliste",
+          "wert": "aus Auftrag"
+        },
+        {
+          "id": "edemozeile052",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Zone",
+          "wert": "A bis C"
+        },
+        {
+          "id": "edemozeile053",
+          "typ": "text",
+          "farbe": "",
+          "text": "Nach Route picken, nicht nach Artikel"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte06",
+      "x": 1820,
+      "y": 420,
+      "b": 250,
+      "farbe": "#fdeee2",
+      "titel": "Packerei",
+      "zeilen": [
+        {
+          "id": "edemozeile061",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Karton",
+          "wert": "nach Volumen"
+        },
+        {
+          "id": "edemozeile062",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Beileger",
+          "wert": "Rechnung"
+        },
+        {
+          "id": "edemozeile063",
+          "typ": "text",
+          "farbe": "",
+          "text": "Bruchgefahr extra polstern"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte07",
+      "x": 2180,
+      "y": 420,
+      "b": 250,
+      "farbe": "#e2f4ec",
+      "titel": "Versand",
+      "zeilen": [
+        {
+          "id": "edemozeile071",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Dienst",
+          "wert": "Spedition"
+        },
+        {
+          "id": "edemozeile072",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Abholung",
+          "wert": "taeglich 16:30"
+        },
+        {
+          "id": "edemozeile073",
+          "typ": "text",
+          "farbe": "",
+          "text": "Label drucken, Uebergabe quittieren"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte08",
+      "x": 740,
+      "y": 720,
+      "b": 250,
+      "farbe": "#fdecec",
+      "titel": "Reklamation",
+      "zeilen": [
+        {
+          "id": "edemozeile081",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Fall",
+          "wert": "Mangel bei Eingang"
+        },
+        {
+          "id": "edemozeile082",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Ablage",
+          "wert": "Sperrflaeche"
+        },
+        {
+          "id": "edemozeile083",
+          "typ": "text",
+          "farbe": "",
+          "text": "Ware sperren, Lieferant informieren"
+        }
+      ]
+    },
+    {
+      "id": "edemokarte09",
+      "x": 1460,
+      "y": 140,
+      "b": 250,
+      "farbe": "#efe6fb",
+      "titel": "Kundenauftrag",
+      "zeilen": [
+        {
+          "id": "edemozeile091",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Quelle",
+          "wert": "Shop"
+        },
+        {
+          "id": "edemozeile092",
+          "typ": "paar",
+          "farbe": "",
+          "name": "Nummer",
+          "wert": "A-2026-0815"
+        },
+        {
+          "id": "edemozeile093",
+          "typ": "text",
+          "farbe": "",
+          "text": "Loest die Pickliste aus"
+        }
+      ]
+    }
+  ],
+  "pfeile": [
+    {
+      "id": "edemopfeil01",
+      "x1": 638,
+      "y1": 518,
+      "x2": 732,
+      "y2": 518,
+      "farbe": "#4b5563"
+    },
+    {
+      "id": "edemopfeil02",
+      "x1": 998,
+      "y1": 518,
+      "x2": 1092,
+      "y2": 518,
+      "farbe": "#4b5563"
+    },
+    {
+      "id": "edemopfeil03",
+      "x1": 1358,
+      "y1": 518,
+      "x2": 1452,
+      "y2": 518,
+      "farbe": "#4b5563"
+    },
+    {
+      "id": "edemopfeil04",
+      "x1": 1718,
+      "y1": 518,
+      "x2": 1812,
+      "y2": 518,
+      "farbe": "#4b5563"
+    },
+    {
+      "id": "edemopfeil05",
+      "x1": 2078,
+      "y1": 518,
+      "x2": 2172,
+      "y2": 518,
+      "farbe": "#4b5563"
+    },
+    {
+      "id": "edemopfeil06",
+      "x1": 865,
+      "y1": 624,
+      "x2": 865,
+      "y2": 712,
+      "farbe": "#c0392b"
+    },
+    {
+      "id": "edemopfeil07",
+      "x1": 1585,
+      "y1": 323,
+      "x2": 1585,
+      "y2": 412,
+      "farbe": "#2563eb"
+    }
+  ]
+}

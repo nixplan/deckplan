@@ -1033,6 +1033,11 @@ async function laden(name) {
   elName.value = brett.name || name;
   auswahl.clear();
   zeichne();
+  // Gleich alles ins Bild holen, derselbe Griff wie F1. Ein geladenes Board
+  // liegt sonst irgendwo auf den 4000x3000 und muss erst gesucht werden.
+  // Vor der Meldung, damit "Geladen: ..." stehen bleibt - allesZeigen meldet
+  // bei einem leeren Board selbst etwas.
+  allesZeigen();
   melde('Geladen: ' + name);
 }
 
@@ -1090,9 +1095,14 @@ if (gemerkt) {
 zeichne();
 boardListeHolen();
 
-// Startansicht auf die Mitte des Bretts schieben, damit man nicht in der
-// leeren Ecke oben links anfaengt.
+// Startansicht: liegt schon etwas auf dem Brett, wird es ins Bild geholt -
+// genau wie nach dem Laden und bei F1. Auf einem leeren Brett gibt es nichts
+// einzupassen, dann in die Mitte statt in die leere Ecke oben links.
 // Ueber die Huelle gerechnet, nicht ueber das Brett: die Huelle traegt die
 // zoomabhaengige Groesse, das Brett bleibt immer 4000x3000.
-elBuehne.scrollLeft = (elFlaeche.offsetWidth - elBuehne.clientWidth) / 2;
-elBuehne.scrollTop = (elFlaeche.offsetHeight - elBuehne.clientHeight) / 2;
+if (brett.karten.length || brett.pfeile.length) {
+  allesZeigen();
+} else {
+  elBuehne.scrollLeft = (elFlaeche.offsetWidth - elBuehne.clientWidth) / 2;
+  elBuehne.scrollTop = (elFlaeche.offsetHeight - elBuehne.clientHeight) / 2;
+}
