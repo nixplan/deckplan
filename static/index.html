@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<title>Deckplan</title>
+<link rel="stylesheet" href="/static/deckplan.css">
+</head>
+<body>
+
+<!-- Werkzeugleiste: klebt oben, scrollt nicht mit dem Brett mit -->
+<header id="leiste">
+  <span class="marke">Deckplan</span>
+
+  <input id="boardname" type="text" value="unbenannt" spellcheck="false" title="Boardname = Dateiname">
+
+  <button id="btn-speichern" title="Board nach boards/ schreiben">Speichern</button>
+  <select id="board-auswahl" title="Gespeichertes Board laden">
+    <option value="">Laden ...</option>
+  </select>
+  <button id="btn-board-weg" title="Gespeichertes Board loeschen">Board loeschen</button>
+
+  <span class="trenner"></span>
+
+  <button id="btn-karte" title="Neue Karte in die Mitte legen">+ Karte</button>
+  <button id="btn-pfeil" title="Neuen Pfeil in die Mitte legen">+ Pfeil</button>
+  <button id="btn-neu" title="Leeres Brett">Leeres Brett</button>
+
+  <span class="trenner"></span>
+
+  <button id="btn-zurueck" title="Rueckgaengig (Strg+Z)">Rueckgaengig</button>
+
+  <span id="meldung"></span>
+</header>
+
+<!-- Das Brett. Karten sind normale divs, Pfeile liegen im SVG darueber.
+     #flaeche traegt nur die Groesse: sie waechst und schrumpft mit dem Zoom,
+     damit die Rollbalken stimmen. #brett selbst behaelt seine 4000x3000 und
+     wird per transform skaliert - so bleiben alle Koordinaten im Modell
+     unveraendert, egal wie weit man rein- oder rauszoomt. -->
+<main id="buehne">
+  <div id="flaeche">
+    <div id="brett">
+      <div id="karten"></div>
+      <svg id="pfeile" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div id="gummiband" hidden></div>
+    </div>
+  </div>
+</main>
+
+<!-- Schwebende Farbpalette. Wird bei Bedarf neben das Ziel gesetzt. -->
+<div id="palette" hidden></div>
+
+<script src="/static/deckplan.js"></script>
+</body>
+</html>

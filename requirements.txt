@@ -1,0 +1,8 @@
+# Nur was der Deckplan selbst braucht. Bewusst getrennt von der
+# requirements.txt des Schaltwerks: der Deckplan zieht nichts aus config/
+# oder helpers/, und sein .venv soll nicht den ganzen Projektstapel laden.
+# Dieselben drei Pakete stehen auch oben im Projekt - hier doppelt, damit
+# deckplan/ fuer sich allein lauffaehig bleibt.
+fastapi
+uvicorn[standard]
+pydantic

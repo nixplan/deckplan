@@ -1,0 +1,271 @@
+/* Deckplan - helles, ruhiges Layout.
+   Eine einzige Textfarbe (--tinte) auf allen Pastellflaechen. Deshalb
+   duerfen Kartenfarben nur pastellig sein: sonst wird die Schrift unlesbar. */
+
+:root {
+  --tinte:      #26282c;   /* die eine Textfarbe, ueberall */
+  --papier:     #f6f7f9;   /* Hintergrund der Buehne */
+  --raster:     #e4e7ec;   /* Rasterpunkte auf dem Brett */
+  --kante:      #ccd2da;
+  --leiste-bg:  #ffffff;
+  --markiert:   #2f7bd6;   /* Auswahl-Rahmen */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font: 14px/1.45 -apple-system, "Segoe UI", system-ui, sans-serif;
+  color: var(--tinte);
+  background: var(--papier);
+}
+
+/* Leiste oben fest, Buehne fuellt den Rest. Bewusst Flex statt sticky:
+   die Leiste darf umbrechen, ohne dass eine feste Hoehe im CSS luegt. */
+body { display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── Werkzeugleiste ──────────────────────────────────────────────────── */
+#leiste {
+  flex: 0 0 auto;
+  z-index: 100;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--leiste-bg);
+  border-bottom: 1px solid var(--kante);
+}
+
+#leiste .marke {
+  font-weight: 600;
+  letter-spacing: .04em;
+  margin-right: 6px;
+}
+
+#leiste .trenner {
+  width: 1px;
+  height: 22px;
+  background: var(--kante);
+  margin: 0 4px;
+}
+
+#leiste button,
+#leiste select,
+#leiste input {
+  font: inherit;
+  color: var(--tinte);
+  background: #fff;
+  border: 1px solid var(--kante);
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#leiste input { cursor: text; width: 160px; }
+#leiste button:hover { background: #eef2f7; }
+
+#meldung {
+  margin-left: auto;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* ── Buehne und Brett ────────────────────────────────────────────────── */
+#buehne {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: auto;
+}
+
+/* Nimmt beim Zoomen die skalierte Groesse an (in JS gesetzt). Ohne diese
+   Huelle wuesste die Buehne nichts vom Zoom: ein transform veraendert die
+   Rollflaeche nicht, man koennte herausgezoomtes Brett nicht erreichen. */
+#flaeche {
+  position: relative;
+  width: 4000px;
+  height: 3000px;
+}
+
+#brett {
+  position: relative;
+  width: 4000px;
+  height: 3000px;
+  transform-origin: 0 0;
+  background-image: radial-gradient(var(--raster) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Leertaste gedrueckt und nichts ausgewaehlt: die Buehne laesst sich
+   schieben. Die Hand ueber allem, damit sie nicht am Kartenrand umspringt. */
+body.schwenkbar,
+body.schwenkbar * { cursor: grab !important; }
+body.schwenkt,
+body.schwenkt * { cursor: grabbing !important; }
+
+/* Pfeile liegen als eigene Ebene ueber allen Karten - so wie gewuenscht.
+   pointer-events wird pro Pfeil wieder eingeschaltet, damit die leere
+   Flaeche der SVG-Ebene nicht die Karten darunter blockiert. */
+#pfeile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+}
+
+#pfeile .pfeil { pointer-events: auto; cursor: move; }
+#pfeile .treffer { stroke: transparent; stroke-width: 16; fill: none; }
+#pfeile .griff {
+  fill: #fff;
+  stroke: var(--markiert);
+  stroke-width: 2;
+  cursor: crosshair;
+}
+#pfeile .pfeil.markiert .stil { stroke-dasharray: none; }
+
+/* ── Karten ──────────────────────────────────────────────────────────── */
+.karte {
+  position: absolute;
+  min-width: 160px;
+  background: #fff;
+  border: 1px solid var(--kante);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.07);
+  user-select: none;
+}
+
+.karte.markiert {
+  border-color: var(--markiert);
+  box-shadow: 0 0 0 2px rgba(47,123,214,.28);
+}
+
+.karte .kopf {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 7px 7px 5px 9px;
+  border-bottom: 1px solid rgba(0,0,0,.09);
+  cursor: move;                      /* Kopf ist der Griff zum Schieben */
+}
+
+.karte .titel {
+  flex: 1;
+  font-weight: 600;
+  min-height: 1.2em;
+  outline: none;
+}
+
+/* ── Zeilen ──────────────────────────────────────────────────────────── */
+.karte .zeilen { padding: 4px 0; }
+
+.zeile {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 3px 7px 3px 9px;
+}
+
+.zeile .inhalt { flex: 1; outline: none; min-height: 1.2em; white-space: pre-wrap; }
+
+.zeile .paar-name {
+  flex: 0 0 38%;
+  font-weight: 600;
+  outline: none;
+  min-height: 1.2em;
+  padding-right: 6px;
+  border-right: 1px solid rgba(0,0,0,.12);
+}
+
+.zeile .paar-wert { flex: 1; outline: none; min-height: 1.2em; padding-left: 6px; }
+
+/* Editierbare Felder: erst beim Reinklicken sichtbar als Feld. */
+[contenteditable] { user-select: text; cursor: text; border-radius: 4px; }
+[contenteditable]:focus { background: rgba(255,255,255,.75); box-shadow: 0 0 0 2px var(--markiert); }
+
+/* ── Kleine Knoepfe an Karte und Zeile ───────────────────────────────── */
+.knopf {
+  border: 0;
+  background: transparent;
+  color: #8b939e;
+  font: 12px/1 system-ui, sans-serif;
+  padding: 3px 4px;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;                        /* erst beim Ueberfahren zeigen */
+  transition: opacity .12s;
+}
+
+.karte:hover .knopf, .karte.markiert .knopf { opacity: .75; }
+.knopf:hover { background: rgba(0,0,0,.08); color: var(--tinte); opacity: 1; }
+
+.zeile .zeilenknoepfe { display: flex; gap: 1px; }
+
+.karte .fuss {
+  display: flex;
+  gap: 4px;
+  padding: 4px 8px 7px;
+  border-top: 1px solid rgba(0,0,0,.07);
+}
+
+.karte .fuss button {
+  border: 1px dashed var(--kante);
+  background: transparent;
+  color: #8b939e;
+  font: 11px/1 system-ui, sans-serif;
+  padding: 4px 7px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.karte .fuss button:hover { color: var(--tinte); border-style: solid; }
+
+/* Breite ziehen: schmaler Streifen an der rechten Kante */
+.karte .breite {
+  position: absolute;
+  top: 0;
+  right: -3px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+/* ── Gummiband (Mehrfachauswahl) ─────────────────────────────────────── */
+#gummiband {
+  position: absolute;
+  border: 1px solid var(--markiert);
+  background: rgba(47,123,214,.10);
+  pointer-events: none;
+  z-index: 90;
+}
+
+/* ── Farbpalette ─────────────────────────────────────────────────────── */
+#palette {
+  position: fixed;
+  z-index: 200;
+  display: grid;
+  grid-template-columns: repeat(6, 22px);
+  gap: 5px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid var(--kante);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0,0,0,.14);
+}
+
+#palette .tupfer {
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(0,0,0,.18);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#palette .tupfer:hover { outline: 2px solid var(--markiert); }
+
+/* Das `display: grid` oben schlaegt die Browser-Regel [hidden] { display: none } -
+   die Palette bliebe sonst nach dem ersten Oeffnen fuer immer stehen. Vor der
+   ersten Benutzung faellt das nicht auf: leer ist sie 0 Pixel hoch. */
+#palette[hidden] { display: none; }
