@@ -1,37 +1,18 @@
-# Der komplette .claude/-Ordner gehoert ins Repo - ohne Ausnahme.
-# Grund: Das Projekt liegt auf einer externen Platte und wird auf mehreren
-# Rechnern benutzt. Das Harness (Regeln, Memory, Hooks) muss vollstaendig
-# mitreisen, auch wenn das Projekt mal frisch geklont statt kopiert wird.
-#
-# settings.local.json wird sonst global ignoriert (~/.config/git/ignore).
-# Diese Negation ueberstimmt das - Regeln im Repo haben Vorrang vor der
-# globalen Ignore-Datei. Die globale Regel selbst bleibt unangetastet,
-# sie ist maschinenspezifisch und gilt fuer andere Projekte weiter.
-!.claude/settings.local.json
+# Claude-Harness - maschinenspezifisch, bleibt lokal
+.claude/
 
-# Python-Bytecode. Wird bei jedem Lauf neu erzeugt und ist rechnerspezifisch
-# (cpython-310 vs cpython-313). Bleibt ausserdem liegen, wenn die Quelldatei
-# umbenannt wird - p_chat.pyc und p_filter.pyc lagen noch im Repo, obwohl es
-# die zugehoerigen .py-Dateien seit der Umbenennung nicht mehr gibt.
+# Python-Bytecode
 __pycache__/
 *.pyc
 
-# Finder-Metadaten von macOS. Kein Projektinhalt, aendert sich staendig.
-# Betrifft auch .claude/.DS_Store - die Regel "der komplette .claude-Ordner
-# gehoert ins Repo" meint das Harness, nicht den Finder-Krempel darin.
+# macOS Finder-Metadaten
 .DS_Store
 
-# Virtuelle Umgebung. Wird von start.sh bei Bedarf neu angelegt, haengt an
-# der Python-Version des jeweiligen Rechners und waere auf der Wanderplatte
-# sowieso nicht uebertragbar. Aktuell nicht getrackt - die Regel ist Vorsorge.
+# Virtuelle Umgebung, wird von start.sh angelegt
 .venv/
 
-# PID des laufenden Servers, von start.sh geschrieben.
-# Frueher stand hier "deckplan/.server.pid" - der Pfad stammte aus der
-# Eltern-Ignore-Datei und griff hier nie, weil deckplan/ selbst die Wurzel
-# dieses Repos ist.
+# PID des laufenden Servers
 .server.pid
 
-# Eigener Log-Ordner samt rotierten Staenden. Gleicher Grund fuer die
-# Pfadkorrektur wie oben.
+# Logausgabe
 logs/
