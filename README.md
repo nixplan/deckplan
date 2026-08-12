@@ -2,6 +2,8 @@
 Hilfsmittel: Ein Gerüst an universellen Regeln, Vorgaben, Style-Guides und 
 Standard-Tests für den Agenten.
 
+**Nachtrag** Fokus-Funkion (F1) nachträglich hinzugefügt. Ging mir auffen Sack...
+
 Ab hier alles 1 zu 1 die Ausgabe vom LLM.
 
 --- 
