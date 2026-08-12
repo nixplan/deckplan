@@ -1,4 +1,10 @@
-**Zuletzt aktualisiert:** 2026-08-12 22:04
+**One-Shot:** Entstanden auf Basis eines einfachen Pormpts in knapp 45 Minuten.
+Hilfsmittel: Ein Gerüst an universellen Regeln, Vorgaben, Style-Guides und 
+Standard-Tests für den Agenten.
+
+Ab hier alles 1 zu 1 die Ausgabe vom LLM.
+
+--- 
 
 # Deckplan
 
