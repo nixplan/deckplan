@@ -26,7 +26,7 @@ import re
 
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -38,6 +38,7 @@ STATIC_DIR = os.path.join(DECKPLAN_DIR, "static")
 BOARDS_DIR = os.path.join(DECKPLAN_DIR, "boards")
 LOG_DIR = os.path.join(DECKPLAN_DIR, "logs")
 LOG_FILE = os.path.join(LOG_DIR, "deckplan.log")
+LLM_DOCS_DATEI = os.path.join(STATIC_DIR, "llm_docs.md")
 
 HOST = "127.0.0.1"  # bewusst nur lokal - das Brett muss nicht ins Netz
 PORT = 8600
@@ -123,6 +124,52 @@ def startseite() -> FileResponse:
     return FileResponse(os.path.join(STATIC_DIR, "index.html"))
 
 
+@app.get("/health")
+def health() -> dict:
+    """Status - und der Wegweiser zur LLM-Doku.
+
+    Wer maschinell auf diesen Server stösst, landet zuerst hier: `/` liefert
+    HTML fürs Auge, aus dem nicht hervorgeht, wie man das Brett füttert. Der
+    Hinweis auf /llm-docs steht deshalb hier und nicht nur im Log - ein Log
+    sieht nur, wer den Server selbst gestartet hat.
+    """
+    return {
+        "status": "ok",
+        "dienst": "Deckplan",
+        "llm_docs_url": "/llm-docs",
+        "hinweis": (
+            "Fuer LLMs: /llm-docs enthaelt die vollstaendige Anleitung - "
+            "Board-Format, Farben, Pfeilgeometrie und die Fallen."
+        ),
+    }
+
+
+@app.get("/llm-docs", response_class=PlainTextResponse)
+def llm_docs() -> str:
+    """Die LLM-Anleitung als Plain Text.
+
+    Inhalt kommt aus static/llm_docs.md. Die Marker in doppelten geschweiften
+    Klammern werden per Textersetzung gefuellt - kein str.format und kein
+    Templating, sonst muessten die geschweiften Klammern in den JSON-
+    Beispielen der Doku alle escaped werden.
+
+    Bewusst bei jedem Aufruf frisch gelesen: eine geaenderte Doku wirkt ohne
+    Serverneustart, und die Datei ist ein paar Kilobyte gross.
+    """
+    if not os.path.exists(LLM_DOCS_DATEI):
+        raise HTTPException(status_code=404, detail="llm_docs.md fehlt")
+
+    with open(LLM_DOCS_DATEI, "r", encoding="utf-8") as datei:
+        text = datei.read()
+
+    namen = boards_liste()
+    return (
+        text
+        .replace("{{BASE_URL}}", f"http://{HOST}:{PORT}")
+        .replace("{{BOARD_LISTE}}", "\n".join(namen) if namen else "(noch keine)")
+    )
+
+
 @app.get("/api/boards")
 def boards_liste() -> list[str]:
     """Listet alle gespeicherten Boards (ohne .json-Endung), alphabetisch."""
@@ -183,4 +230,5 @@ app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 if __name__ == "__main__":
     log.info("Deckplan startet auf http://%s:%d", HOST, PORT)
+    log.info("Anleitung fuer LLMs: http://%s:%d/llm-docs", HOST, PORT)
     uvicorn.run(app, host=HOST, port=PORT, log_level="warning")
