@@ -94,7 +94,15 @@ function neueId() {
  * ist sofort klar, dass nichts mehr geteilt wird.
  */
 function schnappschuss() {
-  verlauf.push(JSON.stringify(brett));
+  const stand = JSON.stringify(brett);
+  // Aendert sich nichts, kommt auch nichts auf den Stapel. Sonst legt jedes
+  // Reinklicken in ein Textfeld einen Eintrag ab, ohne dass etwas passiert -
+  // nach fuenf angeklickten Feldern braucht es fuenf Strg+Z, bevor sichtbar
+  // etwas zurueckgeht. Das sieht kaputt aus. Zwei gleiche Staende
+  // hintereinander sind ohnehin nie sinnvoll: ein Zurueck darauf tut nichts.
+  if (verlauf[verlauf.length - 1] === stand) return;
+
+  verlauf.push(stand);
   if (verlauf.length > VERLAUF_TIEFE) verlauf.shift();
 }
 
@@ -986,6 +994,15 @@ window.addEventListener('blur', schwenkenBeenden);
 async function boardListeHolen() {
   try {
     const antwort = await fetch('/api/boards');
+    // fetch wirft nur, wenn gar keine Antwort kommt - ein Fehlerstatus geht
+    // ohne Murren durch. Ohne diese Zeile liefert json() dann {detail: ...}
+    // statt einer Liste, map() wirft, und der Fang unten meldet "Server nicht
+    // erreichbar" - obwohl er antwortet. Der haeufigste Fall dafuer ist die
+    // externe Platte: liegt boards/ nicht mehr da, gibt es 500 statt Liste.
+    if (!antwort.ok) {
+      melde('Boardliste nicht ladbar (' + antwort.status + ')');
+      return;
+    }
     const namen = await antwort.json();
     elAuswahl.replaceChildren(neueOption('', 'Laden ...'),
                               ...namen.map(n => neueOption(n, n)));
